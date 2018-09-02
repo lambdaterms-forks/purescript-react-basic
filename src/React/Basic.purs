@@ -44,7 +44,7 @@ foreign import data Component :: Type -> Type
 component
   :: forall props state
    . { displayName :: String
-     , initialState :: { | state }
+     , initialState :: { | props } -> { | state }
      , receiveProps ::
         { isFirstMount :: Boolean
         , props :: { | props }
@@ -98,7 +98,7 @@ stateless
 stateless { displayName, render } =
   component
     { displayName
-    , initialState: {}
+    , initialState: const {}
     , receiveProps: \_ -> pure unit
     , render: \this -> render this.props
     }
@@ -151,7 +151,7 @@ fragmentKeyed = runFn2 fragmentKeyed_
 foreign import component_
   :: forall props state
    . { displayName :: String
-     , initialState :: { | state }
+     , initialState :: { | props } -> { | state }
      , receiveProps ::
         EffectFn1
           { isFirstMount :: Boolean

@@ -4,8 +4,8 @@ var React = require("react");
 var Fragment = React.Fragment || "div";
 
 exports.component_ = function(spec) {
-  var Component = function constructor() {
-    this.state = spec.initialState;
+  var Component = function constructor(props) {
+    this.state = spec.initialState(props);
     this._setState = this.setState.bind(this);
     return this;
   };
