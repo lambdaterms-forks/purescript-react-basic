@@ -5,7 +5,7 @@ var Fragment = React.Fragment || "div";
 
 exports.component_ = function(spec) {
   var Component = function constructor(props) {
-    this.state = spec.initialState(props);
+    this.state = spec.initialState(props)();
     this._setState = this.setState.bind(this);
     var that = this;
     this._setStateThen = function(setter, then) {
