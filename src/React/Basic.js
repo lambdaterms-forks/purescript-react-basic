@@ -7,6 +7,12 @@ exports.component_ = function(spec) {
   var Component = function constructor(props) {
     this.state = spec.initialState(props);
     this._setState = this.setState.bind(this);
+    var that = this;
+    this._setStateThen = function(setter, then) {
+      that._setState(setter, function() {
+        then(that.state);
+      });
+    }
     return this;
   };
 
@@ -20,7 +26,7 @@ exports.component_ = function(spec) {
       props: this.props,
       state: this.state,
       setState: this._setState,
-      setStateThen: this._setState,
+      setStateThen: this._setStateThen,
       instance_: this
     });
   };
@@ -31,7 +37,7 @@ exports.component_ = function(spec) {
       props: this.props,
       state: this.state,
       setState: this._setState,
-      setStateThen: this._setState,
+      setStateThen: this._setStateThen,
       instance_: this
     });
   };
@@ -41,7 +47,7 @@ exports.component_ = function(spec) {
       props: this.props,
       state: this.state,
       setState: this._setState,
-      setStateThen: this._setState,
+      setStateThen: this._setStateThen,
       instance_: this
     });
   };
