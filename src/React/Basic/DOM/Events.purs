@@ -38,6 +38,10 @@ module React.Basic.DOM.Events
   , clientY
   , button
   , buttons
+  , deltaMode
+  , deltaX
+  , deltaY
+  , deltaZ
   ) where
 
 import Prelude
@@ -173,3 +177,17 @@ altKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).altKey
 
 metaKey :: EventFn SyntheticEvent (Maybe Boolean)
 metaKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).metaKey
+
+-- | Wheel event fields
+
+deltaMode :: EventFn SyntheticEvent (Maybe Int)
+deltaMode = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaMode
+
+deltaX :: EventFn SyntheticEvent (Maybe Number)
+deltaX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaX
+
+deltaY :: EventFn SyntheticEvent (Maybe Number)
+deltaY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaY
+
+deltaZ :: EventFn SyntheticEvent (Maybe Number)
+deltaZ = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaZ
