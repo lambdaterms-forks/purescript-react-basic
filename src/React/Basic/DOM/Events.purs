@@ -36,6 +36,8 @@ module React.Basic.DOM.Events
   , screenY
   , clientX
   , clientY
+  , targetX
+  , targetY
   , button
   , buttons
   , deltaMode
@@ -47,7 +49,7 @@ module React.Basic.DOM.Events
 import Prelude
 
 import Data.Maybe (Maybe)
-import Data.Nullable (toMaybe)
+import Data.Nullable (Nullable, toMaybe)
 import Effect.Unsafe (unsafePerformEffect)
 import React.Basic.Events (EventFn, SyntheticEvent, unsafeEventFn)
 import Unsafe.Coerce (unsafeCoerce)
@@ -157,6 +159,18 @@ clientX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientX
 
 clientY :: EventFn SyntheticEvent (Maybe Number)
 clientY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientY
+
+
+-- foreign import getBoundingClientRect ∷ EventTarget → { left ∷ Number , top ∷ Number , right ∷ Number , bottom ∷ Number }
+foreign import getTargetX ∷ SyntheticEvent → Nullable Number
+foreign import getTargetY ∷ SyntheticEvent → Nullable Number
+
+targetX :: EventFn SyntheticEvent (Maybe Number)
+targetX = unsafeEventFn (toMaybe <<< getTargetX)
+
+targetY :: EventFn SyntheticEvent (Maybe Number)
+targetY = unsafeEventFn (toMaybe <<< getTargetY)
+
 
 button :: EventFn SyntheticEvent (Maybe Int)
 button = unsafeEventFn \e -> toMaybe (unsafeCoerce e).button
