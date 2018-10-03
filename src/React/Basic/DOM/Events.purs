@@ -40,6 +40,7 @@ module React.Basic.DOM.Events
   , targetY
   , button
   , buttons
+  , normalizedWheel
   , deltaMode
   , deltaX
   , deltaY
@@ -193,6 +194,21 @@ metaKey :: EventFn SyntheticEvent (Maybe Boolean)
 metaKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).metaKey
 
 -- | Wheel event fields
+
+-- | Normalized wheel event field
+-- Based on npm's normalize wheel
+type NormalizedWheel =
+  { spinX :: Number
+  , spinY :: Number
+  , pixelX :: Number
+  , pixelY :: Number }
+
+foreign import computeNormalizedWheel :: SyntheticEvent -> Nullable NormalizedWheel
+
+normalizedWheel :: EventFn SyntheticEvent (Maybe NormalizedWheel)
+normalizedWheel = unsafeEventFn (toMaybe <<< computeNormalizedWheel)
+
+-- | Original wheel event field
 
 deltaMode :: EventFn SyntheticEvent (Maybe Int)
 deltaMode = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaMode
