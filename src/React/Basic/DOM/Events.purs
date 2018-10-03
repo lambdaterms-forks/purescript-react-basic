@@ -38,6 +38,8 @@ module React.Basic.DOM.Events
   , clientY
   , targetX
   , targetY
+  , pageX
+  , pageY
   , button
   , buttons
   , normalizedWheel
@@ -160,6 +162,12 @@ clientX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientX
 
 clientY :: EventFn SyntheticEvent (Maybe Number)
 clientY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientY
+
+pageX :: EventFn SyntheticEvent (Maybe Number)
+pageX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).pageX
+
+pageY :: EventFn SyntheticEvent (Maybe Number)
+pageY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).pageY
 
 
 -- foreign import getBoundingClientRect ∷ EventTarget → { left ∷ Number , top ∷ Number , right ∷ Number , bottom ∷ Number }
