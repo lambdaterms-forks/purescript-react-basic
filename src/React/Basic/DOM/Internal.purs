@@ -87,6 +87,7 @@ type SharedProps specific =
   , vocab             :: String
   , wmode             :: String
   , onClick           :: EventHandler
+  , onWheel           :: EventHandler
   -- TODO: add more common event handlers
   | specific
   )

@@ -36,14 +36,23 @@ module React.Basic.DOM.Events
   , screenY
   , clientX
   , clientY
+  , targetX
+  , targetY
+  , pageX
+  , pageY
   , button
   , buttons
+  , normalizedWheel
+  , deltaMode
+  , deltaX
+  , deltaY
+  , deltaZ
   ) where
 
 import Prelude
 
 import Data.Maybe (Maybe)
-import Data.Nullable (toMaybe)
+import Data.Nullable (Nullable, toMaybe)
 import Effect.Unsafe (unsafePerformEffect)
 import React.Basic.Events (EventFn, SyntheticEvent, unsafeEventFn)
 import Unsafe.Coerce (unsafeCoerce)
@@ -154,6 +163,24 @@ clientX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientX
 clientY :: EventFn SyntheticEvent (Maybe Number)
 clientY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).clientY
 
+pageX :: EventFn SyntheticEvent (Maybe Number)
+pageX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).pageX
+
+pageY :: EventFn SyntheticEvent (Maybe Number)
+pageY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).pageY
+
+
+-- foreign import getBoundingClientRect ∷ EventTarget → { left ∷ Number , top ∷ Number , right ∷ Number , bottom ∷ Number }
+foreign import getTargetX ∷ SyntheticEvent → Nullable Number
+foreign import getTargetY ∷ SyntheticEvent → Nullable Number
+
+targetX :: EventFn SyntheticEvent (Maybe Number)
+targetX = unsafeEventFn (toMaybe <<< getTargetX)
+
+targetY :: EventFn SyntheticEvent (Maybe Number)
+targetY = unsafeEventFn (toMaybe <<< getTargetY)
+
+
 button :: EventFn SyntheticEvent (Maybe Int)
 button = unsafeEventFn \e -> toMaybe (unsafeCoerce e).button
 
@@ -173,3 +200,32 @@ altKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).altKey
 
 metaKey :: EventFn SyntheticEvent (Maybe Boolean)
 metaKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).metaKey
+
+-- | Wheel event fields
+
+-- | Normalized wheel event field
+-- Based on npm's normalize wheel
+type NormalizedWheel =
+  { spinX :: Number
+  , spinY :: Number
+  , pixelX :: Number
+  , pixelY :: Number }
+
+foreign import computeNormalizedWheel :: SyntheticEvent -> Nullable NormalizedWheel
+
+normalizedWheel :: EventFn SyntheticEvent (Maybe NormalizedWheel)
+normalizedWheel = unsafeEventFn (toMaybe <<< computeNormalizedWheel)
+
+-- | Original wheel event field
+
+deltaMode :: EventFn SyntheticEvent (Maybe Int)
+deltaMode = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaMode
+
+deltaX :: EventFn SyntheticEvent (Maybe Number)
+deltaX = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaX
+
+deltaY :: EventFn SyntheticEvent (Maybe Number)
+deltaY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaY
+
+deltaZ :: EventFn SyntheticEvent (Maybe Number)
+deltaZ = unsafeEventFn \e -> toMaybe (unsafeCoerce e).deltaZ
