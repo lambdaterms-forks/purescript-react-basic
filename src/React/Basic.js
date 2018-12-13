@@ -31,6 +31,14 @@ exports.component_ = function(spec) {
     });
   };
 
+  Component.prototype.componentWillUnmount = function componentWillUnmount() {
+    spec.willUnmount({
+      props: this.props,
+      state: this.state,
+      instance_: this
+    });
+  };
+
   Component.prototype.componentDidUpdate = function componentDidUpdate() {
     spec.receiveProps({
       isFirstMount: false,

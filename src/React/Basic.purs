@@ -62,9 +62,15 @@ component
         , instance_ :: ComponentInstance
         }
         -> JSX
+     , willUnmount ::
+        { props :: { | props }
+        , state :: { | state }
+        , instance_ :: ComponentInstance
+        }
+        -> Effect Unit
      }
   -> Component { | props }
-component { displayName, initialState, receiveProps, render } =
+component { displayName, initialState, receiveProps, render, willUnmount } =
   component_
     { displayName
     , initialState
@@ -81,6 +87,11 @@ component { displayName, initialState, receiveProps, render } =
         , state: this.state
         , setState: runEffectFn1 this.setState
         , setStateThen: \update cb -> runEffectFn2 this.setStateThen update (mkEffectFn1 cb)
+        , instance_: this.instance_
+        }
+    , willUnmount: mkEffectFn1 \this → willUnmount
+        { props: this.props
+        , state: this.state
         , instance_: this.instance_
         }
     }
@@ -101,6 +112,7 @@ stateless { displayName, render } =
     , initialState: const $ pure {}
     , receiveProps: \_ -> pure unit
     , render: \this -> render this.props
+    , willUnmount: \_ -> pure unit
     }
 
 -- | SetState uses an update function to modify the current state.
@@ -171,6 +183,13 @@ foreign import component_
           , instance_ :: ComponentInstance
           }
           JSX
+     , willUnmount ::
+        EffectFn1
+          { props :: { | props }
+          , state :: { | state }
+          , instance_ :: ComponentInstance
+          }
+          Unit
      }
   -> Component { | props }
 
