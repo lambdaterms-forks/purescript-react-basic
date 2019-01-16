@@ -26,12 +26,13 @@ type EventProcessor h a = ScopedSyntheticEvent h → Effect a
 
 type ResultHandler a = a → Effect Unit
 
-type EventHandler h a =
+type Handle h a =
   { eventProcessor ∷ EventProcessor h a
   , resultHandler ∷ ResultHandler a
   }
 
-handle ∷ ∀ a. (∀ h. EventHandler h a) → Events.EventHandler
+handle ∷ ∀ a.
+  (∀ h. Handle h a) → Events.EventHandler
 handle { eventProcessor, resultHandler } = handle' eventProcessor resultHandler
 
 handle' ∷ ∀ a. (∀ h. EventProcessor h a) → ResultHandler a → Events.EventHandler

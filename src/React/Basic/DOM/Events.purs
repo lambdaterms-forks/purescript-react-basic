@@ -49,7 +49,7 @@ module React.Basic.DOM.Events
 import Prelude
 
 import Data.Maybe (Maybe)
-import Data.Nullable (Nullable, toMaybe)
+import Data.Nullable (toMaybe)
 import Effect.Unsafe (unsafePerformEffect)
 import React.Basic.Events (EventFn, SyntheticEvent, unsafeEventFn)
 import Unsafe.Coerce (unsafeCoerce)

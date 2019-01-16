@@ -8,6 +8,15 @@ This package implements an opinionated set of bindings to the React library, opt
 
 This is our LTS fork of v2.0.1 with different and extended event set and events handling API.
 
+## Fork changes
+
+- Different API for handling events based on scoped type variable which is easier to handle and
+  really prevents synthetic event leak
+
+## Deps
+
+normalize-wheel@^1.0.1 is required so you should add it to your project packege.json.
+
 ## Features
 
 - All React DOM elements and attributes are supported (soon, events are a work in progress).

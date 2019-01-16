@@ -4,7 +4,7 @@ import Prelude
 
 import React.Basic as React
 import React.Basic.DOM as R
-import React.Basic.Events as Events
+import React.Basic.EventProcessor (handle_) as EventsProcessor
 
 type Props =
   { label :: String
@@ -23,8 +23,8 @@ component = React.component { displayName: "ToggleButton", initialState, receive
 
     render { props, state, setState } =
       R.button
-        { onClick: Events.handler_ do
-            setState \s -> s { on = not s.on }
+        { onClick: EventsProcessor.handle_
+            (setState \s -> s { on = not s.on })
         , children:
             [ R.text props.label
             , R.text if state.on
