@@ -44,7 +44,7 @@ foreign import data Component :: Type -> Type
 component
   :: forall props state
    . { displayName :: String
-     , initialState :: { | state }
+     , initialState :: { | props } -> Effect { | state }
      , receiveProps ::
         { isFirstMount :: Boolean
         , props :: { | props }
@@ -62,9 +62,15 @@ component
         , instance_ :: ComponentInstance
         }
         -> JSX
+     , willUnmount ::
+        { props :: { | props }
+        , state :: { | state }
+        , instance_ :: ComponentInstance
+        }
+        -> Effect Unit
      }
   -> Component { | props }
-component { displayName, initialState, receiveProps, render } =
+component { displayName, initialState, receiveProps, render, willUnmount } =
   component_
     { displayName
     , initialState
@@ -83,6 +89,11 @@ component { displayName, initialState, receiveProps, render } =
         , setStateThen: \update cb -> runEffectFn2 this.setStateThen update (mkEffectFn1 cb)
         , instance_: this.instance_
         }
+    , willUnmount: mkEffectFn1 \this → willUnmount
+        { props: this.props
+        , state: this.state
+        , instance_: this.instance_
+        }
     }
 
 -- | Create a stateless React component.
@@ -98,9 +109,10 @@ stateless
 stateless { displayName, render } =
   component
     { displayName
-    , initialState: {}
+    , initialState: const $ pure {}
     , receiveProps: \_ -> pure unit
     , render: \this -> render this.props
+    , willUnmount: \_ -> pure unit
     }
 
 -- | SetState uses an update function to modify the current state.
@@ -151,7 +163,7 @@ fragmentKeyed = runFn2 fragmentKeyed_
 foreign import component_
   :: forall props state
    . { displayName :: String
-     , initialState :: { | state }
+     , initialState :: { | props } -> Effect { | state }
      , receiveProps ::
         EffectFn1
           { isFirstMount :: Boolean
@@ -171,6 +183,13 @@ foreign import component_
           , instance_ :: ComponentInstance
           }
           JSX
+     , willUnmount ::
+        EffectFn1
+          { props :: { | props }
+          , state :: { | state }
+          , instance_ :: ComponentInstance
+          }
+          Unit
      }
   -> Component { | props }
 
