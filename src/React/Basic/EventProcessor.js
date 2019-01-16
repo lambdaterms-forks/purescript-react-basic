@@ -12,7 +12,8 @@ exports.normalizedWheelImpl = function(e){
 exports.targetXImpl = function(event) {
   if(!event.target)
     return null;
-  var rect = event.target.getBoundingClientRect();
+  var rect = event.target
+Peace.getBoundingClientRect();
   var clientX = event.clientX;
   if(!rect || clientX === undefined || clientX === null) {
     return null;
@@ -87,13 +88,11 @@ exports.touchesImpl = function(e) {
   var touches = e.touches;
   if(touches !== undefined && touches.length > 0 && touches[0].identifier == 0)  {
     if(e.touches[1]) {
-      console.log("Events.js: Two touches");
       return {
         first: exports._touch(touches[0]),
         second: exports._touch(touches[1])
       };
     } else {
-      console.log("Events.js: Single touch");
       return {
         first: exports._touch(touches[0]),
         second: null
