@@ -36,13 +36,10 @@ module React.Basic.DOM.Events
   , screenY
   , clientX
   , clientY
-  , targetX
-  , targetY
   , pageX
   , pageY
   , button
   , buttons
-  , normalizedWheel
   , deltaMode
   , deltaX
   , deltaY
@@ -170,17 +167,6 @@ pageY :: EventFn SyntheticEvent (Maybe Number)
 pageY = unsafeEventFn \e -> toMaybe (unsafeCoerce e).pageY
 
 
--- foreign import getBoundingClientRect ∷ EventTarget → { left ∷ Number , top ∷ Number , right ∷ Number , bottom ∷ Number }
-foreign import getTargetX ∷ SyntheticEvent → Nullable Number
-foreign import getTargetY ∷ SyntheticEvent → Nullable Number
-
-targetX :: EventFn SyntheticEvent (Maybe Number)
-targetX = unsafeEventFn (toMaybe <<< getTargetX)
-
-targetY :: EventFn SyntheticEvent (Maybe Number)
-targetY = unsafeEventFn (toMaybe <<< getTargetY)
-
-
 button :: EventFn SyntheticEvent (Maybe Int)
 button = unsafeEventFn \e -> toMaybe (unsafeCoerce e).button
 
@@ -202,19 +188,6 @@ metaKey :: EventFn SyntheticEvent (Maybe Boolean)
 metaKey = unsafeEventFn \e -> toMaybe (unsafeCoerce e).metaKey
 
 -- | Wheel event fields
-
--- | Normalized wheel event field
--- Based on npm's normalize wheel
-type NormalizedWheel =
-  { spinX :: Number
-  , spinY :: Number
-  , pixelX :: Number
-  , pixelY :: Number }
-
-foreign import computeNormalizedWheel :: SyntheticEvent -> Nullable NormalizedWheel
-
-normalizedWheel :: EventFn SyntheticEvent (Maybe NormalizedWheel)
-normalizedWheel = unsafeEventFn (toMaybe <<< computeNormalizedWheel)
 
 -- | Original wheel event field
 

@@ -11,9 +11,10 @@ type Props =
   }
 
 component :: React.Component Props
-component = React.component { displayName: "ToggleButton", initialState, receiveProps, render }
+component = React.component { displayName: "ToggleButton", initialState, receiveProps, render, willUnmount }
   where
-    initialState =
+    willUnmount = const $ pure unit
+    initialState = const $ pure
       { on: false
       }
 
