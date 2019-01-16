@@ -4,6 +4,10 @@
 
 This package implements an opinionated set of bindings to the React library, optimizing for the most basic use cases.
 
+## Fork info
+
+This is our LTS fork of v2.0.1 with different and extended event set and events handling API.
+
 ## Features
 
 - All React DOM elements and attributes are supported (soon, events are a work in progress).
