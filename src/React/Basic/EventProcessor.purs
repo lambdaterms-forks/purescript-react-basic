@@ -150,6 +150,7 @@ type Touch =
   , clientY ∷ Number
   , pageX ∷ Number
   , pageY ∷ Number
+  , target ∷ HTMLElement
   , targetX ∷ Number
   , targetY ∷ Number
   }

@@ -59,6 +59,7 @@ exports._touch = function(t) {
   return {
     clientX: t.clientX,
     clientY: t.clientY,
+    target: t.target
     targetX: exports.targetXImpl(t),
     targetY: exports.targetYImpl(t),
     // currentTargetX
