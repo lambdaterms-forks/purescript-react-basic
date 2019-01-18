@@ -12,7 +12,7 @@ exports.normalizedWheelImpl = function(e){
 exports.targetXImpl = function(event) {
   if(!event.target)
     return null;
-  var rect = event.target
+  var rect = event.target.getBoundingClientRect();
   var clientX = event.clientX;
   if(!rect || clientX === undefined || clientX === null) {
     return null;
