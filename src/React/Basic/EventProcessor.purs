@@ -24,20 +24,9 @@ toReactBasicSyntheticEvent = unsafeCoerce
 
 type EventProcessor h a = ScopedSyntheticEvent h → Effect a
 
-type ResultHandler a = a → Effect Unit
-
-type Handle h a =
-  { eventProcessor ∷ EventProcessor h a
-  , resultHandler ∷ ResultHandler a
-  }
-
-handle ∷ ∀ a.
-  (∀ h. Handle h a) → Events.EventHandler
-handle { eventProcessor, resultHandler } = handle' eventProcessor resultHandler
-
-handle' ∷ ∀ a. (∀ h. EventProcessor h a) → ResultHandler a → Events.EventHandler
-handle' eventProcessor resultHandler =
-  mkEffectFn1 (fromReactBasicSyntheticEvent >>> pure >=> eventProcessor >=> resultHandler)
+handle ∷ (∀ h. EventProcessor h Unit) → Events.EventHandler
+handle eventProcessor =
+  mkEffectFn1 (fromReactBasicSyntheticEvent >>> pure >=> eventProcessor)
 
 handle_ ∷ Effect Unit → Events.EventHandler
 handle_ = Events.handler_
